@@ -1,0 +1,43 @@
+@model LetsJam.Models.Band
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Band</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="BandId" />
+        <div class="form-group">
+            <label asp-for="bandName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="bandName" class="form-control" />
+                <span asp-validation-for="bandName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="BandImage" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="BandImage" class="form-control" />
+                <span asp-validation-for="BandImage" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
