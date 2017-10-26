@@ -124,12 +124,12 @@ namespace LetsJam.Controllers
                                     .Parse(file.ContentDisposition)
                                     .FileName
                                     .Trim('"');
-                    filename = _environment.WebRootPath + $@"\Profile\{file.FileName.Split('\\').Last()}";
+                    filename = _environment.WebRootPath + $@"/Profile/{file.FileName.Split('/').Last()}";
 
                     using (var fileStream = new FileStream(filename, FileMode.Create))
                     {
                         await file.CopyToAsync(fileStream);
-                        model.path = $@"\Profile\{file.FileName.Split('\\').Last()}";
+                        model.path = $@"/Profile/{file.FileName.Split('/').Last()}";
                     }
                 }
 
