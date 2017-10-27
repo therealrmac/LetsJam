@@ -10,6 +10,10 @@ using Microsoft.Extensions.Options;
 using LetsJam.Models;
 using LetsJam.Models.ManageViewModels;
 using LetsJam.Services;
+using LetsJam.Data;
+using Microsoft.AspNetCore.Hosting;
+using LetsJam.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace LetsJam.Controllers
 {
@@ -22,6 +26,8 @@ namespace LetsJam.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly IHostingEnvironment _environment;
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
@@ -29,7 +35,9 @@ namespace LetsJam.Controllers
           IOptions<IdentityCookieOptions> identityCookieOptions,
           IEmailSender emailSender,
           ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+          ILoggerFactory loggerFactory,
+          ApplicationDbContext context,
+          IHostingEnvironment environment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -37,6 +45,8 @@ namespace LetsJam.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context;
+            _environment = environment;
         }
 
         //
@@ -340,6 +350,73 @@ namespace LetsJam.Controllers
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }
+
+        //GET LIST OF FRIEND REQUESTS 
+        public async Task<IActionResult> Requests()
+        {
+            RequestViewModel request = new RequestViewModel();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            //LINQ FOR GETTING A ROW IN RELATION TABLE WHERE THE FRIENDID IS EQUAL TO THE CURRENT USER
+            var incomingRequests = _context.Relation.Include("User").Where(x => x.Friend == user && x.Connected == null);
+            //END
+
+            return View(incomingRequests);
+
+        }
+
+
+
+        //ACCEPT FRIEND REQUEST POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ConfirmRequest(string user)
+        {
+            var currentUser = await GetCurrentUserAsync();
+
+
+            ApplicationUser userFriend = await _context.ApplicationUser.Where(u => u.Id == user).SingleOrDefaultAsync();
+
+            //LINQ FOR FINDING ANY RELATION THAT MATCHES WHERE THE FRIEND COLUMN ON RELATION TABLE EQUALS THE CURRENT USER AND IS NOT CONNECTED
+            var connectedRelation = _context.Relation.Include("User").Single(x => x.Friend == currentUser && x.Connected == null);
+            //END
+
+            //SETTING THE CONNECTED VALUE TO TRUE TO NOW SAY THAT THESE TWO USERS ARE FRIENDS
+            connectedRelation.Connected = true;
+
+            //UPDATE THESE CHANGES AND SAVE THEM
+            _context.Update(connectedRelation);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Requests", "Manage");
+
+        }
+
+        //Decline FRIEND REQUEST POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> DeclineRequest(string user)
+        {
+            var currentUser = await GetCurrentUserAsync();
+
+            ApplicationUser userFriend = await _context.ApplicationUser.Where(u => u.Id == user).SingleOrDefaultAsync();
+
+            //LINQ FOR FINDING ANY RELATION THAT MATCHES WHERE THE FRIEND COLUMN ON RELATION TABLE EQUALS THE CURRENT USER AND IS NOT CONNECTED
+            var connectedRelation = _context.Relation.Include("User").Single(x => x.Friend == currentUser && x.Connected == null);
+            //END
+
+            //TO "DECLINE" THE REQUEST, THE ENTIRE ROW WILL BE DELETED FROM THE DATABASE  AND SAVED
+            _context.Remove(connectedRelation);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Requests", "Manage");
+
+        }
+
 
         #region Helpers
 

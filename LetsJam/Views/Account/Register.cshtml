@@ -5,10 +5,24 @@
 
 <h2>@ViewData["Title"].</h2>
 
-<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal"  enctype="multipart/form-data">
     <h4>Create a new account.</h4>
     <hr />
     <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="firstname" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="firstname" class="form-control" />
+            <span asp-validation-for="firstname" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="lastname" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="lastname" class="form-control" />
+            <span asp-validation-for="lastname" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-group">
         <label asp-for="Email" class="col-md-2 control-label"></label>
         <div class="col-md-10">
@@ -16,6 +30,43 @@
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
     </div>
+    <div class="form-group">
+        <label asp-for="city" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="city" class="form-control" />
+            <span asp-validation-for="city" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="state" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="state" class="form-control" />
+            <span asp-validation-for="state" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="instrument" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="instrument" class="form-control" />
+            <span asp-validation-for="instrument" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="style" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="style" class="form-control" />
+            <span asp-validation-for="style" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="experience" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="experience" class="form-control" />
+            <span asp-validation-for="experience" class="text-danger"></span>
+        </div>
+    </div>
+    <label asp-for="profileImg">Set Profile Image:</label>
+    <input asp-for="profileImg" class="form-control" type="file" accept="image/*" />
     <div class="form-group">
         <label asp-for="Password" class="col-md-2 control-label"></label>
         <div class="col-md-10">
