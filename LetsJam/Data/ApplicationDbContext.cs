@@ -21,10 +21,17 @@ namespace LetsJam.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+            builder.Entity<Band>()
+              .Property(b => b.created)
+              .HasDefaultValueSql("GETDATE()");
+            builder.Entity<Relation>()
+              .Property(b => b.ConnectedOn)
+              .HasDefaultValueSql("GETDATE()");
         }
 
         public DbSet<LetsJam.Models.Relation> Relation { get; set; }
 
         public DbSet<LetsJam.Models.Band> Band { get; set; }
+        public DbSet<LetsJam.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }
