@@ -427,6 +427,25 @@ namespace LetsJam.Controllers
             return RedirectToAction("Requests", "Manage");
 
         }
+        public async Task<IActionResult> Search(string searchFor, string searchText)
+        {
+            UserListViewModel UserList = new UserListViewModel();
+
+            if (!String.IsNullOrEmpty(searchText) && searchFor.Equals("People"))
+            {
+                UserList.user = await _context.ApplicationUser.Where(s => s.Firstname.ToLower().Contains(searchText.ToLower()) || s.Lastname.ToLower().Contains(searchText.ToLower())).ToListAsync();
+            }
+            else if (!String.IsNullOrEmpty(searchText) && searchFor.Equals("Instrument"))
+            {
+                UserList.user = await _context.ApplicationUser.Where(l => l.instrument.ToLower().Contains(searchText.ToLower())).ToListAsync();
+            }
+            else if(!String.IsNullOrEmpty(searchText) && searchFor.Equals("Style"))
+            {
+                UserList.user = await _context.ApplicationUser.Where(u => u.musicStyle.ToLower().Contains(searchText.ToLower())).ToListAsync();
+            }
+
+            return View(UserList);
+        }
 
 
         #region Helpers
