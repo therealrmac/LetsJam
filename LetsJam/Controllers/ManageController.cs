@@ -68,13 +68,24 @@ namespace LetsJam.Controllers
             {
                 return View("Error");
             }
+            //LINQ FOR GETTING A LIST OF FRIENDS WHERE THE USER IS EQUAL TO THE CURRENT USER
+            var completeFriendList = await _context.Relation.Include("Friend").Where(x => x.User == user && x.Connected == true).ToListAsync();
+            //END
+
+            //LINQ FOR GETTING A LIST OF FRIENDS WHERE THE USER IS EQUAL TO ID THAT WAS PASSED IN
+            var FriendList = await _context.Relation.Include("User").Where(x => x.Friend == user && x.Connected == true).ToListAsync();
+            //END
+
             var model = new IndexViewModel
             {
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
                 Logins = await _userManager.GetLoginsAsync(user),
-                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user)
+                BrowserRemembered = await _signInManager.IsTwoFactorClientRememberedAsync(user),
+                ApplicationUser= user,
+                friendList = completeFriendList,
+                friendList2 = FriendList,
             };
             return View(model);
         }
