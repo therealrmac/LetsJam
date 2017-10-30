@@ -1,23 +1,25 @@
 ﻿@model IndexViewModel
-@{
-    ViewData["Title"] = "Manage your account";
-}
+<br />
+<br />
 
-<h2>@ViewData["Title"].</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p class="text-success">@ViewData["StatusMessage"]</p>
 <a asp-action="EditProfile" class="btn btn-default">Edit Profile</a>
+
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div class="container">
     <div class="fb-profile">
         @if (Model.ApplicationUser.ProfileImage == null)
         {
            <img align="left" class="fb-image-profile thumbnail" src="~/Profile/blankProfile.jpg" alt="blank profile image" /> 
+
         }
         else
         {
         <img align="left" class="fb-image-profile thumbnail" src="@Model.ApplicationUser.ProfileImage" alt="Profile image example" />
         }
+
         <div class="fb-profile-text">
             <h1>@Model.ApplicationUser.Firstname @Model.ApplicationUser.Lastname</h1>
             

@@ -9,6 +9,85 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+.fb-profile img.fb-image-lg {
+    z-index: 0;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+pad {
+    margin-top: 20px;
+}
+
+
+.scrolling {
+    height: 300px;
+    overflow-y: auto;
+}
+
+.fb-image-profile {
+    margin: -90px 10px 0px 50px;
+    z-index: 9;
+    width: 20%;
+}
+
+.msg-update-boxes {
+    padding: 5px;
+    font-size: 1.6rem;
+    color: gray;
+}
+
+.smallimg {
+    max-width: 4%;
+    max-height: 40%;
+    border-radius: 70%;
+}
+
+.blue {
+    background: blue
+}
+
+.grey {
+    background: grey
+}
+
+.chats-row {
+    height: 100vh;
+}
+
+    .chats-row div {
+        height: 50%;
+        border: 1px solid #ddd;
+        padding: 0px;
+    }
+
+.list-group-item {
+    border: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+    .list-group-item:first-child {
+        border-top: none;
+        border-top-left-radius: 0px;
+        border-top-right-radius: 0px;
+    }
+
+
+.current-chat {
+    height: 100vh;
+    border: 1px solid #ddd;
+}
+
+.chat-toolbar-row {
+    background-color: #f5f5f5;
+}
+
+.chat-toolbar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
 input,
