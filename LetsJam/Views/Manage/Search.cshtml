@@ -1,0 +1,34 @@
+﻿@model LetsJam.Models.ViewModels.UserListViewModel
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+
+        </tr>
+    </thead>
+
+    @if (Model.user != null)
+    {
+        @foreach (var item in Model.user)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Relations" asp-action="UserProfile" asp-route-id="@item.Id">
+                        <img src="@item.ProfileImage" class="smallimg">
+                        <span>@item.Firstname @item.Lastname</span>
+                    </a>
+                    <br />
+                    <span>Instrument: @item.instrument</span>
+                    <br />
+                    <span>Style: @item.musicStyle </span>
+                    <br />
+                    <span>Location: @item.City, @item.State</span>
+                </td>
+            </tr>
+        }
+    }
+
+
+
+</table>

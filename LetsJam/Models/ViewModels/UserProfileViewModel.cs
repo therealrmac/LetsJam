@@ -20,6 +20,7 @@ namespace LetsJam.Models.ViewModels
         public List<Relation> friendList2 { get; set; }
         public List<Relation> friendList3 { get; set; }
         public List<Relation> friendList4 { get; set; }
+        public List<Band> thebands { get; set; }
         public IEnumerable<Band> Currentbands { get; set; }
       
     }
