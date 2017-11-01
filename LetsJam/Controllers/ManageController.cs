@@ -447,6 +447,23 @@ namespace LetsJam.Controllers
             return View(UserList);
         }
 
+        //GET USERS BASED ON CURRENT USERS STATE
+        [Authorize]
+        public async Task<IActionResult> stateUsers()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            UserListViewModel UserList = new UserListViewModel();
+            UserList.user = await _context.ApplicationUser.Where(x => x.State == currentUser.State).ToListAsync();
+
+            return View(UserList);
+
+        }
+
 
         #region Helpers
 
