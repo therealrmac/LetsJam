@@ -9,6 +9,7 @@ using LetsJam.Data;
 using LetsJam.Models;
 using Microsoft.AspNetCore.Identity;
 using LetsJam.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LetsJam.Controllers
 {
@@ -87,6 +88,77 @@ namespace LetsJam.Controllers
 
             return View(upVM);
         }
+
+        
+
+
+        //AddFriend Post
+        [HttpPost]
+        public async Task<IActionResult> AddFriend(ApplicationUser user)
+        {
+
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            ApplicationUser userFriend = await _context.ApplicationUser.Where(u => u.Id == user.Id).SingleOrDefaultAsync();
+
+            var relationB = new Relation() { User = currentUser, Friend = userFriend };
+
+
+
+            _context.Add(relationB);
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToAction("UserProfile", new { id = userFriend.Id });
+        }
+
+        
+
+        //DELETEFRIEND POST
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RemoveFriend(string id)
+        {
+            var currentUser = await GetCurrentUserAsync();
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            ApplicationUser userFriend = await _context.ApplicationUser.SingleOrDefaultAsync(x => x.Id == id);
+
+            try
+            {
+                var UserIdIsCurrentUser = _context.Relation.Include("Friend").Single(x => x.User == currentUser && x.Friend.Id == id && x.Connected == true);
+                if (UserIdIsCurrentUser != null)
+                {
+                    _context.Remove(UserIdIsCurrentUser);
+                }
+            }
+            catch
+            {
+                var friendIdIsYourFriend = _context.Relation.Single(x => x.User.Id == id && x.Friend == currentUser && x.Connected == true);
+                if (friendIdIsYourFriend != null)
+                {
+                    _context.Remove(friendIdIsYourFriend);
+                }
+
+            }
+
+
+
+
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("UserProfile", new { id = userFriend.Id });
+
+        }
+
+
+
 
         // GET: Relations/Create
         public IActionResult Create()
