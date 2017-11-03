@@ -27,11 +27,15 @@ namespace LetsJam.Data
             builder.Entity<Relation>()
               .Property(b => b.ConnectedOn)
               .HasDefaultValueSql("GETDATE()");
+            builder.Entity<StatusUpdates>()
+                .Property(d => d.created)
+                .HasDefaultValueSql("GETDATE()");
         }
 
         public DbSet<LetsJam.Models.Relation> Relation { get; set; }
 
         public DbSet<LetsJam.Models.Band> Band { get; set; }
         public DbSet<LetsJam.Models.ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<LetsJam.Models.StatusUpdates> StatusUpdates { get; set; }
     }
 }
