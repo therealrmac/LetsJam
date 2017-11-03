@@ -36,6 +36,7 @@ namespace LetsJam.Models
         
         public string ProfileImage { get; set; }
         
+        public ICollection<StatusUpdates> updates { get; set; }
 
         [InverseProperty("Friend")]
         public virtual ICollection<Relation> Friends { get; set; }
