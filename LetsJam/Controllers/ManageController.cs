@@ -464,6 +464,53 @@ namespace LetsJam.Controllers
 
         }
 
+        // GET: StatusUpdates
+        public async Task<IActionResult> Index()
+        {
+            var messageVM = new MessageViewModel();
+
+            var currentuser = await GetCurrentUserAsync();
+
+            messageVM.updates = await _context.StatusUpdates.Include(m => m.message).Include(u => u.user).Where(x => x.user == currentuser).ToListAsync();
+
+            return View(messageVM);
+        }
+
+        // GET: StatusUpdates/Create
+        [Authorize]
+        public async Task<IActionResult> Create()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var status = new StatusUpdates();
+            status.user = currentUser;
+
+            var message = await _context.StatusUpdates.Where(u => u.user == status.user).ToListAsync();
+
+
+            return View(status);
+        }
+
+        // POST: StatusUpdates/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Create(StatusUpdates statusUpdates)
+        {
+            ModelState.Remove("User");
+            if (ModelState.IsValid)
+            {
+                var user = await GetCurrentUserAsync();
+                statusUpdates.user = user;
+                _context.Add(statusUpdates);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Manage");
+            }
+            return View(statusUpdates);
+        }
+
+
 
         #region Helpers
 
