@@ -31,5 +31,10 @@ namespace LetsJam.Controllers
         {
             return View();
         }
+
+        public IActionResult ModalPopUp()
+        {
+            return View();
+        }
     }
 }

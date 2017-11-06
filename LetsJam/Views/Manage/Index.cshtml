@@ -6,23 +6,30 @@
 
 <p class="text-success">@ViewData["StatusMessage"]</p>
 <a asp-action="EditProfile" class="btn btn-default">Edit Profile</a>
+<div>
+    <p>
+        <a asp-action="Create" class="btn btn-default" asp-route-id="@Model.ApplicationUser.updates">Update Status</a>
+    </p>
+
+</div>
+
 
 <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 <div class="container">
     <div class="fb-profile">
         @if (Model.ApplicationUser.ProfileImage == null)
         {
-           <img align="left" class="fb-image-profile thumbnail" src="~/Profile/blankProfile.jpg" alt="blank profile image" /> 
+            <img align="left" class="fb-image-profile thumbnail" src="~/Profile/blankProfile.jpg" alt="blank profile image" />
 
         }
         else
         {
-        <img align="left" class="fb-image-profile thumbnail" src="@Model.ApplicationUser.ProfileImage" alt="Profile image example" />
+            <img align="left" class="fb-image-profile thumbnail" src="@Model.ApplicationUser.ProfileImage" alt="Profile image example" />
         }
 
         <div class="fb-profile-text">
             <h1>@Model.ApplicationUser.Firstname @Model.ApplicationUser.Lastname</h1>
-            
+
         </div>
     </div>
     <hr />
@@ -42,15 +49,15 @@
                 }
                 else
                 {
-                <a asp-controller="Relations" asp-action="UserProfile" asp-route-id="@item.Friend.Id">
-                    <img src=" @item.Friend.ProfileImage" alt="img" class="smallimg" />
-                    @Html.DisplayFor(modelItem => item.Friend.Firstname)
-                    @Html.DisplayFor(x => item.Friend.Lastname)
-                </a>
-                <br />
-                    }
+                    <a asp-controller="Relations" asp-action="UserProfile" asp-route-id="@item.Friend.Id">
+                        <img src=" @item.Friend.ProfileImage" alt="img" class="smallimg" />
+                        @Html.DisplayFor(modelItem => item.Friend.Firstname)
+                        @Html.DisplayFor(x => item.Friend.Lastname)
+                    </a>
+                    <br />
                 }
-            
+            }
+
             @foreach (var item in Model.friendList2)
             {
                 @if (item.User.ProfileImage == null)
@@ -64,25 +71,61 @@
                 }
                 else
                 {
-                <a asp-controller="Relations" asp-action="UserProfile" asp-route-id="@item.User.Id">
-                    <img src=" @item.User.ProfileImage" alt="img" class="smallimg" />
-                    @Html.DisplayFor(modelItem => item.User.Firstname)
-                    @Html.DisplayFor(x => item.User.Lastname)
-                </a>
-                <br />
-                    }
+                    <a asp-controller="Relations" asp-action="UserProfile" asp-route-id="@item.User.Id">
+                        <img src=" @item.User.ProfileImage" alt="img" class="smallimg" />
+                        @Html.DisplayFor(modelItem => item.User.Firstname)
+                        @Html.DisplayFor(x => item.User.Lastname)
+                    </a>
+                    <br />
                 }
+            }
         </div>
 
     </div>
     <br />
     <hr />
 
-    <div>
-        <p>
-            <a asp-action="Create" asp-route-id="@Model.ApplicationUser.updates">Status Update</a>
-        </p>
 
-    </div>
 
-</div>
+            @foreach (var item in Model.userUpdates)
+            {
+                <div class="message-item" id="m5">
+                    <div class="message-inner">
+                        <div class="message-head clearfix">
+                            <div class="avatar pull-left">
+                                
+                                    <img src="@item.user.ProfileImage" class="feedImg" />
+                                
+                            </div>
+                            <div class="user-detail">
+
+                                <div class="post-meta">
+                                    <div class="asker-meta">
+                                        <span class="qa-message-what"></span>
+                                        <span class="qa-message-when">
+                                            <span class="qa-message-when-data">@item.created</span>
+                                        </span>
+                                        <span class="qa-message-who">
+
+                                            <span class="qa-message-who-pad">by </span>
+                                            <span class="qa-message-who-data">@item.user.Firstname @item.user.Lastname</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="qa-message-content">
+                                @item.message
+                            </div>
+
+                       
+                       
+
+                    </div>
+                </div>
+
+
+            }
+            
+        </div>
+  

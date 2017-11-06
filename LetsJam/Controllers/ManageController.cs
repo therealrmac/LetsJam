@@ -75,6 +75,7 @@ namespace LetsJam.Controllers
             //LINQ FOR GETTING A LIST OF FRIENDS WHERE THE USER IS EQUAL TO ID THAT WAS PASSED IN
             var FriendList = await _context.Relation.Include("User").Where(x => x.Friend == user && x.Connected == true).ToListAsync();
             //END
+            var UserUpdates = await _context.StatusUpdates.Where(x => x.user == user).ToListAsync();
 
             var model = new IndexViewModel
             {
@@ -86,6 +87,7 @@ namespace LetsJam.Controllers
                 ApplicationUser= user,
                 friendList = completeFriendList,
                 friendList2 = FriendList,
+                userUpdates= UserUpdates,
             };
             return View(model);
         }
@@ -505,9 +507,9 @@ namespace LetsJam.Controllers
                 statusUpdates.user = user;
                 _context.Add(statusUpdates);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Manage");
+                return RedirectToAction("Index");
             }
-            return View(statusUpdates);
+            return View("Index");
         }
 
 
