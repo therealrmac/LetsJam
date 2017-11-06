@@ -15,6 +15,7 @@ namespace LetsJam.Models
         [Display(Name ="Message")]
         public string message { get; set; }
 
+        [Required]
         public ApplicationUser user { get; set; }
 
         [Required]

@@ -32,5 +32,7 @@ namespace LetsJam.Models.ManageViewModels
         public List<Relation> friendList2 { get; set; }
 
         public ICollection<StatusUpdates> updates { get; set; }
+
+        public List<StatusUpdates> userUpdates { get; set; } = new List<StatusUpdates>();
     }
 }
